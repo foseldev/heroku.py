@@ -1,26 +1,17 @@
 import streamlit as st
+import os, sys
 
-#st.title("ff")
+@st.experimental_singleton
+def installff():
+  os.system('sbase install geckodriver')
+  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
 
-from selenium.webdriver.chrome.options import Options
-########################################################
-options = Options()
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
-options.add_argument('--log-level=3')
-#########################################################
+_ = installff()
+from selenium import webdriver
+from selenium.webdriver import FirefoxOptions
+opts = FirefoxOptions()
+opts.add_argument("--headless")
+browser = webdriver.Firefox(options=opts)
 
-            
-#########################################################
-try:
-    browser = webdriver.Chrome('C:/Users/Water/Desktop/chromedriver.exe', options=options) # Chrome Driver
-    browser.get('https://www.wholefoodsmarket.com/products/all-products?featured=on-sale') # Website Link
-    print('Enter the zipcode of your local WholeFoods...')
-    try:
-        parser = argparse.ArgumentParser()
-        parser.add_argument("zipcode")
-        args = parser.parse_args()
-        zipcode = str(args.zipcode)
-        browser.find_element_by_xpath("//input[@id='pie-store-finder-modal-search-field']").send_keys(zipcode) # Zip code
-    except:
-        browser.find_element_by_xpath("//input[@id='pie-store-finder-modal-search-field']").send_keys(input()) # Zip code
+browser.get('http://www.google.com')
+st.write(browser.page_source)
