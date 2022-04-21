@@ -2,22 +2,25 @@ import streamlit as st
 
 #st.title("ff")
 
-print('ñ')
+from selenium.webdriver.chrome.options import Options
+########################################################
+options = Options()
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+options.add_argument('--log-level=3')
+#########################################################
 
-
-from selenium import webdriver
-import time
-
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
-driver = webdriver.Chrome(options=chrome_options)
-
-driver.get("https://www.google.com")
-print('El texto es:')
-time.sleep(1)
-driver.find_element_by_xpath("//div[contains(text(),'Acepto')]").click()
-print('si')
-st.title("ff")
-driver.quit()
+            
+#########################################################
+try:
+    browser = webdriver.Chrome('C:/Users/Water/Desktop/chromedriver.exe', options=options) # Chrome Driver
+    browser.get('https://www.wholefoodsmarket.com/products/all-products?featured=on-sale') # Website Link
+    print('Enter the zipcode of your local WholeFoods...')
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("zipcode")
+        args = parser.parse_args()
+        zipcode = str(args.zipcode)
+        browser.find_element_by_xpath("//input[@id='pie-store-finder-modal-search-field']").send_keys(zipcode) # Zip code
+    except:
+        browser.find_element_by_xpath("//input[@id='pie-store-finder-modal-search-field']").send_keys(input()) # Zip code
