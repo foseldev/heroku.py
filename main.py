@@ -1,5 +1,5 @@
 import streamlit as st
 
-st.stitle("ff")
+st.title("ff")
 
 print('ñ')
